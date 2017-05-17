@@ -8,11 +8,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import kim.ladmusician.capacityevaluation.adapter.model.AdapterDataModel;
+import kim.ladmusician.capacityevaluation.adapter.view.AdapterDataView;
 import kim.ladmusician.capacityevaluation.adapter.viewholder.BaseViewHolder;
 import kim.ladmusician.capacityevaluation.interfaces.OnRecyclerItemClickListener;
 
 public abstract class BaseAdapter<M, VH extends BaseViewHolder>
-        extends RecyclerView.Adapter<VH> {
+        extends RecyclerView.Adapter<VH>
+        implements AdapterDataModel<M>, AdapterDataView{
     private final List<M> mModels;
     private OnRecyclerItemClickListener mItemClickListener = null;
     public Context mContext;
@@ -20,8 +23,9 @@ public abstract class BaseAdapter<M, VH extends BaseViewHolder>
     @NonNull
     protected abstract Object getModelId(@NonNull M model);
 
-    public BaseAdapter() {
-        mModels = new ArrayList<>();
+    public BaseAdapter(Context ctx) {
+        this.mModels = new ArrayList<>();
+        this.mContext = ctx;
     }
 
     public void clearAndAddAll(Collection<M> data) {
@@ -64,8 +68,8 @@ public abstract class BaseAdapter<M, VH extends BaseViewHolder>
         }
     }
 
-    public void removeItem(M item) {
-        int position = getItemPosition(item);
+    public void removeItem(int position) {
+        M item = getItem(position);
         if (position >= 0) {
             mModels.remove(item);
         }
@@ -89,9 +93,13 @@ public abstract class BaseAdapter<M, VH extends BaseViewHolder>
         return position;
     }
 
-    private void addInternal(M item) {
+    public void addInternal(M item) {
         System.err.println("Adding item " + getModelId(item));
         mModels.add(item);
+    }
+
+    public void setOnRecyclerItemClickListener(OnRecyclerItemClickListener listener) {
+        this.mItemClickListener = listener;
     }
 
     @Override
@@ -101,7 +109,7 @@ public abstract class BaseAdapter<M, VH extends BaseViewHolder>
 
     @Override
     public void onBindViewHolder(VH holder, int position) {
-        ((BaseViewHolder)holder).bindView(position, mModels.get(position), mItemClickListener);
+        ((BaseViewHolder)holder).bindView(mContext, position, mModels.get(position), mItemClickListener);
     }
 
     protected M getItem(int position) {

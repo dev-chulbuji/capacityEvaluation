@@ -5,5 +5,9 @@ package kim.ladmusician.capacityevaluation.presenter;
  */
 
 public interface MainPresenter extends BasePresenter {
+    void loadItems();
 
+    interface View {
+        void refresh();
+    }
 }

@@ -5,5 +5,4 @@ package kim.ladmusician.capacityevaluation.presenter;
  */
 
 public interface BasePresenter {
-    void onInitView();
 }
