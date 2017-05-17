@@ -1,7 +1,5 @@
 package kim.ladmusician.capacityevaluation.ui.activity;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -26,7 +24,7 @@ public class ActivityMain extends BaseActivity implements MainView {
     }
 
     @Override
-    public void setPresenter(@Nullable Bundle savedInstanceState) {
+    public void setPresenter() {
         basePresenter = new MainPresenterImpl(this);
         basePresenter.onInitView();
     }
