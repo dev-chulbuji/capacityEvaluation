@@ -27,7 +27,8 @@ public class MainPresenterImpl implements MainPresenter {
         getService().getApi().getItems()
                 .subscribeOn(Schedulers.newThread())
                 .map(ResultDTO::getItems)
-                .flatMap(books -> Observable.fromArray(books))
+                .flatMapIterable(books -> books)
+                .flatMap(Observable::just)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(dataModel::add, Throwable::printStackTrace, view::refresh);
     }
